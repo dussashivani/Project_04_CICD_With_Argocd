@@ -22,7 +22,7 @@ pipeline {
                 sh 'ls -ltr'
                 
                 sh ''' mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \\
-                      -Dsonar.host.url=http://44.201.52.174:9000// \\
+                      -Dsonar.host.url=http://44.201.52.174:9000 \\
                       -Dsonar.login=sqa_8e58a7fcc5ddf0ee7bfba9a0ca54c2654ac21988'''
             }
     	}
