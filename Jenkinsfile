@@ -10,7 +10,7 @@ pipeline {
       stage('checkout') {
             steps {
                 echo 'Cloning GIT HUB Repo '
-				git branch: 'main', url: 'https://github.com/adarsh0331/Project_4.git'
+				git branch: 'main', url: 'https://github.com/dussashivani/Project_04_CICD_With_Argocd.git'
             }  
         }
 		
@@ -22,8 +22,8 @@ pipeline {
                 sh 'ls -ltr'
                 
                 sh ''' mvn sonar:sonar \\
-                      -Dsonar.host.url=http://43.204.232.211:9000/ \\
-                      -Dsonar.login=squ_be262f57d808aaacef8b0ea2258a74a1234db21c'''
+                      -Dsonar.host.url=http://44.201.52.174:9000// \\
+                      -Dsonar.login=sqa_8e58a7fcc5ddf0ee7bfba9a0ca54c2654ac21988'''
             }
     	}
 		
@@ -41,7 +41,7 @@ pipeline {
         stage('Docker Image') {
             steps {
                 echo 'Docker Image building'
-				sh 'docker build -t adarshbarkunta/mc:${BUILD_NUMBER} .'
+				sh 'docker build -t shivanidussa/mc:${BUILD_NUMBER} .'
             }
         }
 		
@@ -51,10 +51,10 @@ pipeline {
 			 script {
 			withCredentials([string(credentialsId: 'dockerhub', variable: 'dockerhub')]) 
 			{
-            sh 'docker login -u adarshbarkunta -p ${dockerhub}'
+            sh 'docker login -u shivanidussa -p ${dockerhub}'
 			
 			 }
-			   sh 'docker push adarshbarkunta/mc:${BUILD_NUMBER}'
+			   sh 'docker push shivanidussa/mc:${BUILD_NUMBER}'
 			   
            
 				}
@@ -66,8 +66,8 @@ pipeline {
     stage('Update Deployment File') {
 		
 		 environment {
-            GIT_REPO_NAME = "Project_4"
-            GIT_USER_NAME = "adarsh0331"
+            GIT_REPO_NAME = "Project_04_CICD_With_Argocd"
+            GIT_USER_NAME = "dussashivani"
         }
 		
             steps {
@@ -75,8 +75,8 @@ pipeline {
 				withCredentials([string(credentialsId: 'githubtoken', variable: 'githubtoken')]) 
 				{
                   sh '''
-                    git config user.email "adarsh@gmail.com"
-                    git config user.name "adarsh"
+                    git config user.email "shivanidussa@gmail.com"
+                    git config user.name "shivanidussa"
                     BUILD_NUMBER=${BUILD_NUMBER}
                     sed -i "s/mc:.*/mc:${BUILD_NUMBER}/g" deploymentfiles/deployment.yml
                     git add .
